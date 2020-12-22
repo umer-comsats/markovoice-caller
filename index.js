@@ -5,6 +5,7 @@ const client = require('twilio')(process.env.SID, process.env.AUTH);
 
 const server = express();
 server.use(express.json());
+server.use(express.urlencoded({ extended: false }))
 
 server.get('/test', (req, res) => {
     res.send('Working');
