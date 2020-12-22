@@ -8,6 +8,7 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: false }))
 
 server.get('/test', (req, res) => {
+    console.log('working')
     res.send('Working');
 })
 
