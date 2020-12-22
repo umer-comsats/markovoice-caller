@@ -1,8 +1,6 @@
 const express = require('express');
 require('dotenv').config();
 const client = require('twilio')(process.env.SID, process.env.AUTH);
-const VoiceResponse = require('twilio').twiml.VoiceResponse;
-const twiml = new VoiceResponse();
 
 
 const server = express();
