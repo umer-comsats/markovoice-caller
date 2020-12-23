@@ -36,8 +36,48 @@ server.post('/call', async (req, res) => {
 server.post('/get-response', (req, res) => {
     const response = JSON.parse(JSON.stringify(req.body));
     if(response.StableSpeechResult.toLowerCase()){
-        console.log(response);
+        const phoneNumber = response.To;
         const command = response.StableSpeechResult.toLowerCase();
+        if(
+            command.includes('yes') ||
+            command.includes('talk to') ||
+            command.includes('ask') ||
+            command.includes('think') ||
+            command.includes('thinking') ||
+            command.includes('maybe') 
+        ){
+            addCall(phoneNumber, 'Interested');
+        }else if(
+            command.includes('not interested') ||
+            command.includes('I\'m not interested') ||
+            command.includes('don\'t need') ||
+            command.includes('i am not interested')
+        ){
+            addCall(phoneNumber, 'Not Interested');
+        }else if(
+            command.includes('busy') ||
+            command.includes('call back') ||
+            command.includes('call me back') ||
+            command.includes('have to go')
+        ){
+            addCall(phoneNumber, 'Busy');
+        }else if(
+            command.includes('stop calling') ||
+            command.includes('do not call') ||
+            command.includes('no call') ||
+            command.includes('keep on calling') ||
+            command.includes('tierd of')
+        ){
+            addCall(phoneNumber, 'Do Not Call');
+        } else if (
+            command.includes('no') ||
+            command.includes('so') ||
+            command.includes('don\'t need')
+        ){
+            addCall(phoneNumber, 'Not Interested')
+        } else {
+            addCall(phoneNumber, 'Unknown')
+        }
 
         
     }
