@@ -1,6 +1,7 @@
 const express = require('express');
 require('dotenv').config();
 const mongoose = require('mongoose');
+const { TaskQueueRealTimeStatisticsContext } = require('twilio/lib/rest/taskrouter/v1/workspace/taskQueue/taskQueueRealTimeStatistics');
 const client = require('twilio')(process.env.SID, process.env.AUTH);
 const CallModel = require('./model/calls');
 
@@ -38,6 +39,7 @@ server.post('/get-response', (req, res) => {
     if(response.StableSpeechResult.toLowerCase()){
         const phoneNumber = response.To;
         const command = response.StableSpeechResult.toLowerCase();
+        console.log(command)
         if(
             command.includes('yes') ||
             command.includes('talk to') ||
@@ -84,14 +86,15 @@ server.post('/get-response', (req, res) => {
 });
 
 async function addCall(number, label) {
+    console.log('Called', label, number)
     try {
-        let call = CallModel.findOne({ number: number });
+        let call = await CallModel.findOne({ number: number });
+        console.log(call);
         if (call) {
-            call = await callModel.findOneAndUpdate(
-                { number: number }, // filter field
+            call = await CallModel.findOneAndUpdate(
+                { number: number, label: 'other' }, // filter field
                 { label: label }, // field to update -> field: new-value
                 { new: true }, //return newly created instance, and not the old one.
-                { useFindAndModify: false } //to avoid deprecation warning
             )
             return true;
         }
