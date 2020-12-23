@@ -15,13 +15,13 @@ server.get('/test', (req, res) => {
 server.post('/call', async (req, res) => {
     const callTo = req.body.number;
     console.log(callTo)
-//     await client.calls
-//     .create({
-//         url: 'https://ruby-millipede-6609.twil.io/welcome',
-//         to: callTo,
-//         from: process.env.NUMBER
-//     });
-    res.send('aa');
+    await client.calls
+    .create({
+        url: 'https://ruby-millipede-6609.twil.io/welcome',
+        to: callTo,
+        from: process.env.NUMBER
+    });
+    res.send('Done');
 });
 
 
